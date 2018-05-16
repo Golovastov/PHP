@@ -1,7 +1,7 @@
 <?php
 echo "Task 1: <br>";
 echo task1(28,-28) . "<br>";
-function task1($a,$b) {
+function task1($a, $b) {
     if ($a >= 0 && $b >= 0) {
         echo $a - $b;
     } else if ($a < 0 && $b < 0) {
@@ -11,7 +11,7 @@ function task1($a,$b) {
     }
 }
 
-echo "Task 2: <br>";
+echo "<br> Task 2: <br>";
 $z = 1;
 switch ($z) {
     case 1:
@@ -44,4 +44,81 @@ switch ($z) {
         echo " 15 <br>";
         break;
 }
+
+echo "<br> Task 3-4 <br>";
+
+mathOperation(1, 2, "addition");
+mathOperation(1, 2, "subtraction");
+mathOperation(1, 2, "multiplication");
+mathOperation(1, 2, "division");
+
+function mathOperation($arg1, $arg2, $operation) {
+    switch ($operation) {
+        case "addition" :
+            echo _addition($arg1, $arg2) . "<br>";
+            break;
+        case "subtraction" :
+            echo _subtraction($arg1, $arg2) . "<br>";
+            break;
+        case "multiplication" :
+            echo _multiplication($arg1, $arg2) . "<br>";
+            break;
+        case "division" :
+            echo _division($arg1, $arg2) . "<br>";
+            break;
+    }
+}
+
+function _addition ($x, $y) {
+    return $x + $y;
+}
+function _subtraction ($x, $y) {
+    return $x - $y;
+}
+function _multiplication ($x, $y) {
+    return $x * $y;
+}
+function _division ($x, $y) {
+    return $x / $y;
+}
+
+echo "<br> Task 5 <br>";
+echo "Текущий год: " . date(Y) . "<br>";
+
+echo "<br> Task 6 <br>";
+
+$val = 2;
+$pow = 8;
+
+echo power($val, $pow);
+
+function power($val, $pow) {
+    if ($pow == 0) {
+        return 1;
+    } else if ($pow > 0) {
+        return $val * power($val, $pow - 1);
+    }  
+}
+
+echo "<br> Task 7 <br>";
+
+$hours = date("H");
+$min = date("i");
+if ($hours == 1 || $hours == 21) {
+    $hstr = " час ";
+} else if ($hours >= 2 && $hours <= 4 || $hours == 22 || $hours == 23) {
+    $hstr = " часа ";
+} else if ($hours == 0 || $hours >= 5) {
+    $hstr = " часов ";
+} 
+
+if ($min == 1 || $min == 21 || $min == 31 || $min == 41 || $min == 51) {
+    $mstr = " минута";
+} else if (($min >=2 && $min <= 4) || ($min >=22 && $min <= 24) || ($min >=32 && $min <= 34) || ($min >=42 && $min <= 44) || ($min >=52 && $min <= 54)) {
+    $mstr = " минуты";
+} else
+    $mstr = " минут";
+
+echo "Точное время: " . $hours . $hstr . $min . $mstr;
+
 ?>
