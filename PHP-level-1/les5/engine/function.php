@@ -24,22 +24,20 @@
           return true;
       }
     }
-  }
 
   function makeUpload($file, $dirUploadedFiles) {
     $newNameFile = hash_file('md5', $file['tmp_name']. '.' .end(explode('.', $file['name'])));
     $path =  '/' . $dirUploadedFiles . '/' . $newNameFile;
     $pathMin = '/' . $dirUploadedFiles . '/min/' . $newNameFile;
-    if (file_exists($path) {
-      echo $file[name] . ' был загружен ранее!';
-    } else {
-        if (move_uploaded_file($file['tmp_name'], $path);) {
-          print 'Файл загруже!';
-          create_tumbnail($path, $pathMin, 250, 250);
-        } else {
-            echo 'Ошибка загрузки!';
-          }
-    }
+    if (file_exists($path)) {
+      echo " был загружен ранее!";
+      if (move_uploaded_file($file['tmp_name'], $path)) {
+        print 'Файл загруже!';
+        create_tumbnail($path, $pathMin, 250, 250);
+      } else {
+          echo 'Ошибка загрузки!';
+        }
+    } 
     return $render = true;   
   }
 

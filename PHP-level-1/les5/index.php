@@ -13,7 +13,7 @@
     <input type="submit" value="Добавить">
   </form>
   <?php
-    require_once('engine/config.php');
+    require_once('config/config.php');
     require_once('engine/resize.php');
     require_once('engine/function.php');
     getFile();
