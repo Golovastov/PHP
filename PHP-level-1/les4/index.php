@@ -58,7 +58,7 @@
           break;
       }
       $newNameFile = 'userImg' . mt_rand(0, 10000) . $type; // Новое имя загруженного файл
-      copy($file['tmp_name'], $dirUploadedFiles . $newNameFile);
+      move_uploaded_file($file['tmp_name'], $dirUploadedFiles . $newNameFile);
       render();
     }
 
