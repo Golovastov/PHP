@@ -30,10 +30,13 @@
     $newNameFile = hash_file('md5', $file['tmp_name']) . '.' . end(explode('.', $file['name']));
     $path =  $dirOriginImg . $newNameFile;
     $pathMin = $dirMinImg . $newNameFile;
+    $size = $file['size'];
     if (file_exists($path)) {
-      echo "<div style='text-align:center'> был загружен ранее!</div>";
+      echo "<div class='status' style='background-color: rgb(243, 92, 92);'> был загружен ранее!</div>";
     } else if (move_uploaded_file($file['tmp_name'], $path)) {
-      echo "<div style='text-align:center'>Файл загружен!</div>";
+      $sql = "insert into images (name, size, src) value ('$newNameFile', '$size', '$path')";
+      executeQuery($sql);
+      echo "<div class='status' style='background-color: rgb(145, 232, 142);'>Файл загружен!</div>";
       create_thumbnail($path, $pathMin, 200, 200);
     } else {
         echo 'Ошибка загрузки!';
@@ -48,5 +51,22 @@
       }
     }
     return $imageGelary;
+  }
+
+  function executeQuery($sql) {
+    $db =  mysqli_connect(HOST, USER, PASS, DB);
+    $result = mysqli_query($db, $sql);
+    mysqli_close($db);
+    return $result;
+  }
+  function getResult($sql) {
+    $db =  mysqli_connect(HOST, USER, PASS, DB);
+    $result = mysqli_query($db, $sql);
+    $array_result = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+      $array_result[] = $row;
+    }
+    mysqli_close($db);
+    return $result;
   }
 ?>
