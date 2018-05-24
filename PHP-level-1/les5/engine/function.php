@@ -6,7 +6,7 @@
       if ($check === true) {
         makeUpload($_FILES['userImg'], $dirOriginImg, $dirMinImg); // инициализация загрузки файла
       } else
-          echo "<div style='text-align:center'>Недопустимы формат или размер привышает 3 Мб</div>";
+          echo "<div class='status' style='background-color: rgb(243, 92, 92);'>Недопустимы формат или размер привышает 3 Мб</div>";
     }
   }
 
@@ -25,24 +25,32 @@
       }
       return $check;
     }
-
+  // Метод загрузки файла
   function makeUpload($file, $dirOriginImg, $dirMinImg) {
+    // новое имя файла
     $newNameFile = hash_file('md5', $file['tmp_name']) . '.' . end(explode('.', $file['name']));
+    // путь к файлу
     $path =  $dirOriginImg . $newNameFile;
+    // путь к минимизированному фалу
     $pathMin = $dirMinImg . $newNameFile;
     $size = $file['size'];
     if (file_exists($path)) {
-      echo "<div class='status' style='background-color: rgb(243, 92, 92);'> был загружен ранее!</div>";
+      echo "<div class='status' style='background-color: rgb(243, 92, 92);'>Файл был загружен ранее!</div>";
     } else if (move_uploaded_file($file['tmp_name'], $path)) {
-      $sql = "insert into images (name, size, src) value ('$newNameFile', '$size', '$path')";
-      executeQuery($sql);
-      echo "<div class='status' style='background-color: rgb(145, 232, 142);'>Файл загружен!</div>";
+      // SQL запрос добавления в базу
+      $sql = "INSERT into images (name, size, src) value ('$newNameFile', '$size', '$path')";
+      if (!executeQuery($sql)) {
+        echo "<div class='status' style='background-color: rgb(243, 92, 92);'>Файл был загружен!<br> <b>База данных не доступна!!!</b></div>";
+      } else {
+          echo "<div class='status' style='background-color: rgb(145, 232, 142);'>Файл загружен!</div>";
+        }
+      // Минимизация изображения
       create_thumbnail($path, $pathMin, 200, 200);
     } else {
         echo 'Ошибка загрузки!';
       } 
   }
-
+  // Метод вывода изображений в браузер
   function render($dir) {
     $arrMinImg = scandir($dir);
     foreach ($arrMinImg as $imgMin) {
@@ -51,22 +59,5 @@
       }
     }
     return $imageGelary;
-  }
-
-  function executeQuery($sql) {
-    $db =  mysqli_connect(HOST, USER, PASS, DB);
-    $result = mysqli_query($db, $sql);
-    mysqli_close($db);
-    return $result;
-  }
-  function getResult($sql) {
-    $db =  mysqli_connect(HOST, USER, PASS, DB);
-    $result = mysqli_query($db, $sql);
-    $array_result = [];
-    while ($row = mysqli_fetch_assoc($result)) {
-      $array_result[] = $row;
-    }
-    mysqli_close($db);
-    return $result;
   }
 ?>

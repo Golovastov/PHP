@@ -17,6 +17,7 @@
     require_once('config/config.php');
     require_once('engine/resize.php');
     require_once('engine/function.php');
+    require_once('engine/function_SQL.php');
     getFile($typeFiles, $dirOriginImg, $dirMinImg);
     $imageGelary = render($dirMinImg);
   ?>
@@ -24,7 +25,11 @@
     <? if (is_array($imageGelary)) : ?>
     <? foreach($imageGelary['imgMin'] as $imgMin) : ?>
     <div>
-      <a href='origin_img.php?hashName=<?=$imgMin?>' target="_blanc">
+      <? 
+        $sql = "SELECT id FROM images WHERE name='" . $imgMin . "'";
+        $id = getResult($sql);
+      ?>
+      <a href='origin_img.php?id=<?=$id[0]?>' target="_blanc">
         <img src="<?=$dirMinImg . $imgMin?>">
       </a>
     </div>
